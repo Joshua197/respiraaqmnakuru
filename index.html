@@ -545,11 +545,12 @@
     .jump .dl { display: none; }
     .jump a { flex: 1 1 0; text-align: center; padding: 11px 6px; font-size: 12px; letter-spacing: 0.02em; }
 
-    /* two-up so the whole week is visible without four screens of scrolling */
+    /* two-up, and drop the card prose: it repeats in the day section below,
+       and on a phone the glance should be an index, not a second read */
     .glance { grid-template-columns: 1fr 1fr; gap: 9px; }
-    .card { padding: 15px 12px 13px; gap: 5px; }
-    .card h3 { font-size: 16px; }
-    .card p { font-size: 13px; }
+    .card { padding: 14px 12px 13px; gap: 4px; }
+    .card h3 { font-size: 15.5px; }
+    .card p { display: none; }
     .card .when { font-size: 12px; }
     .section-label { margin-bottom: 12px; }
 
