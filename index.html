@@ -523,7 +523,8 @@
 
   /* ---------- phone ---------- */
 
-  @media (max-width: 760px) {
+  /* screen-only: A4 print width falls under this breakpoint and must keep the table */
+  @media screen and (max-width: 760px) {
     .wrap { padding: 0 14px 72px; gap: 32px; }
     .logobar { gap: 14px 20px; padding: 14px 16px; }
     .logobar img { height: 28px; }
@@ -560,17 +561,81 @@
   /* ---------- print ---------- */
 
   @media print {
-    :root {
-      --ground: #FFFFFF; --surface: #FFFFFF; --surface-2: #F2F2F2;
-      --ink: #000000; --ink-2: #333333; --ink-3: #555555;
-      --rule: #BBBBBB; --rule-strong: #666666;
-    }
+    @page { size: A4 portrait; margin: 11mm 11mm 13mm; }
+
+    :root { --ground: #FFFFFF; }
+    body { background: #FFFFFF; font-size: 10.5pt; }
+
     .jump { display: none; }
-    .wrap { max-width: none; padding: 0; gap: 22px; }
-    .day { break-inside: avoid-page; }
+    .wrap { max-width: none; padding: 0; gap: 16px; }
+
+    /* keep the colour system on paper */
+    .logobar, .weekbar, .day-head, .card, .card::before,
+    .audience, .tag, tbody tr, thead th, .chip {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* four across keeps the glance one row, so it fits the cover sheet */
+    .glance { grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    .card { padding: 14px 12px 13px; gap: 5px; }
+    .card h3 { font-size: 12pt; }
+    .card p { font-size: 8.4pt; }
+    .card .when { font-size: 9pt; }
+
+    /* cover sheet, then exactly one day per sheet */
+    #day1, #day2, #day3, #day4 { break-before: page; }
+    .day-head { break-after: avoid; }
+    .audience { break-after: avoid; }
+    thead { display: table-header-group; }
     tbody tr { break-inside: avoid; }
-    .glance, .logobar { break-inside: avoid; }
-    .day-head { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .glance, .logobar, .card, .notes, .printonly { break-inside: avoid; }
+
+    /* tighten for paper — Day 2 is the longest at ten rows and must still fit */
+    .logobar { margin-top: 0; padding: 9px 14px; gap: 9px 20px; }
+    .logobar img { height: 28px; }
+    .logobar img.tall { height: 34px; }
+    .masthead { padding-bottom: 14px; }
+    h1 { font-size: 25pt; }
+    .standfirst { font-size: 10pt; }
+    td { padding: 5.5px 11px; }
+    .t-session .title { font-size: 10.5pt; }
+    .t-session .outcome { font-size: 8.4pt; max-width: none; margin-top: 3px; }
+    .t-session .tag { margin-bottom: 3px; }
+    .t-lead { font-size: 8.4pt; }
+    .t-time { font-size: 9pt; }
+    .t-time .dur { font-size: 7.5pt; margin-top: 1px; }
+    .day-head { padding: 13px 18px; }
+    .day-head h2 { font-size: 16pt; }
+    .audience { padding: 7px 18px; font-size: 9pt; }
+    thead th { padding: 6px 11px; font-size: 8pt; }
+    tr.logi td { padding-top: 4px; padding-bottom: 4px; }
+    tr.logi .title { font-size: 9pt; }
+
+    .printonly { display: block !important; }
+    a { text-decoration: none; color: inherit; }
+  }
+
+  /* shown only on paper — printed copies go stale, the QR does not */
+  .printonly { display: none; }
+
+  .printonly {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 16px 18px;
+    display: none;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .printonly img { width: 96px; height: 96px; flex: none; }
+  .printonly .pt { font-size: 10pt; color: var(--ink-2); }
+  .printonly .pt strong { display: block; color: var(--ink); font-size: 11pt; margin-bottom: 3px; }
+  .printonly .pt code {
+    font-family: var(--mono);
+    font-size: 10pt;
+    color: var(--ink);
+    word-break: break-all;
   }
 </style>
 
@@ -938,6 +1003,15 @@
       <li><strong>No technical background is needed.</strong> The introductions on Day 1 and the story circles on Day 2 draw on your own experience &mdash; what you notice at work, at home and in your neighbourhood. You do not need to know anything about air-quality data to take part.</li>
       <li><strong>Two items marked &ldquo;lead to confirm&rdquo;</strong> are still being settled between the secretariat and KMD.</li>
     </ul>
+  </section>
+
+  <section class="printonly">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxAAAAMQAQMAAACNNxG+AAAABlBMVEUQGhj///8Z8m0VAAADZElEQVR42u3d2UrEQBAF0OD//7MiErpr6QEH5qVyAiOaaM5Dg5fq9fr++HUhEAgEAoFAIBAIBAKBQCAQCAQCgUC8RVzh+rtzf+4799387H5a3/F7fV0fvxAIBALx8SvmwPq+JsS62+dKfYe8QCAQiJl5cd/ZU2Elxf615kquRuQFAoFAPCcv7nwIHVihkoj9VfICgUAgnlxf7LVF7nuKb5EXCAQC8Yy8yNkR//uv7+PfxfrC+AUCgUBMz4t4971P92ZtgUAgEJPyoky0veJodldzxJ6p05u0BQKBQEzMi1hh1Dvd/KmYJzk9tAUCgUBMyosuFfI6jNrndEoW9QUCgUDMrS/6JDhlxvqpruqLT7QFAoFAzMqLuOJirybqKu58N9cm6gsEAoGYmhd7PuzPcqURf+tUU6gvEAgEYm5edLOcVtXQJUOfHXlduLZAIBCISXmRRyni6EWtLfLehDkp5AUCgUDMrS/6JMh7mL9a1W19NwKBQDyhvuhn0tbeqG63qPpMXiAQCMTMvMhr8fIc25oUp1Mx4pu1BQKBQEzLi1c7ztZTk7qE6UY4tAUCgUDMqy/2SqKuvzhlRN5lyvgFAoFATM6LbvVETICuHulGPqzXQyAQiPl5sWdF/XSzoOoets5LQiAQiNl5sf/H73aPqmv28ll75tMiEAjE9LyI1UG3Gi//dOq9khcIBAIxPy+6WbF9JdLvImV+FAKBQEzPi7qjYF59l/eMimPg511qtQUCgUDMyotTPtTz885Vhf1pEQgEYnpe1ErhtD6vnq/U7UUoLxAIBGJqXpyqifg0p0rNB/tHIRAIxPz6oq6l6HOjOx2pzqOSFwgEAnE9Yvwir77o946q+4fICwQCgZidF3U1RawW4u+fzm/VH4VAIBCT82Klw14f1EzI/U0rJ04ZpC0QCARiYn1R1++dcqPvf6pv1hYIBAIxr76oSfBqd5BYW5x6rrQFAoFAzMqL/py97sS9WlesN8W6RF4gEAjExLyIdUKtJvo+qa46MX6BQCAQT8mLV4lRz7yo86LUFwgEAvGcvOh7pWJVcTqfT14gEAjE3Lyo6/b2mqJb373e0u8iJS8QCARi+vyoOppR0yBXI/2sKm2BQCAQk/LicxcCgUAgEAgEAoFAIBAIBAKBQCAQCMS/rh/uYq5G7cW9ZAAAAABJRU5ErkJggg==" alt="QR code linking to the online schedule">
+    <div class="pt">
+      <strong>This printed copy may be out of date.</strong>
+      Scan for the current schedule, or open
+      <code>joshua197.github.io/respiraaqmnakuru</code>
+    </div>
   </section>
 
 </div>
