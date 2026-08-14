@@ -296,25 +296,27 @@
   .glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 14px; }
 
   .card {
+    position: relative;
     background: linear-gradient(178deg, var(--tint) 0%, var(--surface) 78%);
     border: 1px solid var(--rule);
     border-radius: 8px;
-    padding: 0 0 18px;
+    padding: 20px 17px 18px;
     display: flex;
     flex-direction: column;
     gap: 7px;
     overflow: hidden;
   }
 
+  /* the day's colour band, inset-proof */
   .card::before {
     content: "";
-    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 5px;
     background: var(--grad);
   }
-
-  .card > * { margin-left: 16px; margin-right: 16px; }
-  .card .n { margin-top: 14px; }
 
   .card .n {
     font-family: var(--mono);

@@ -13,8 +13,21 @@ open it from a QR code without signing in to anything.
 
 ## Updating the schedule
 
-Edit `index.html` and push. GitHub Pages redeploys in about a minute and **the
-URL does not change**, so any QR code already printed keeps working.
+`index.html` is the single source of truth. Edit it and push. GitHub Pages
+redeploys in about a minute and **the URL does not change**, so any QR code
+already printed keeps working.
+
+Keep the two `<meta>` tags in `<head>` intact, particularly:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
+
+Without it, phones lay the page out at roughly 980px and scale the whole thing
+down, so the responsive card layout never activates and the schedule is
+unreadable on exactly the device people use to scan the QR code. Check any
+change on a phone, not just a desktop browser window narrowed with the mouse —
+a narrow window still triggers the mobile layout and hides this class of bug.
 
 ```bash
 git add index.html
