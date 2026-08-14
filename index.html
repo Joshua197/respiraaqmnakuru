@@ -142,6 +142,9 @@
     font-size: 16px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-wrap: break-word;
   }
 
   .wrap {
@@ -525,10 +528,30 @@
 
   /* screen-only: A4 print width falls under this breakpoint and must keep the table */
   @media screen and (max-width: 760px) {
-    .wrap { padding: 0 14px 72px; gap: 32px; }
-    .logobar { gap: 14px 20px; padding: 14px 16px; }
-    .logobar img { height: 28px; }
-    .logobar img.tall { height: 34px; }
+    .wrap { padding: 0 13px 64px; gap: 26px; }
+
+    /* ten logos would otherwise push the schedule itself below the fold */
+    .logobar { gap: 10px 16px; padding: 11px 12px; border-radius: 8px; margin-top: 16px; }
+    .logobar img { height: 21px; }
+    .logobar img.tall { height: 26px; }
+
+    .masthead { padding-bottom: 20px; gap: 11px; }
+    .standfirst { font-size: 15.5px; }
+    .facts { gap: 9px 22px; }
+    .fact dd { font-size: 14px; }
+
+    /* short labels keep all four days on one row */
+    .jump { gap: 6px; padding: 9px 0; }
+    .jump .dl { display: none; }
+    .jump a { flex: 1 1 0; text-align: center; padding: 11px 6px; font-size: 12px; letter-spacing: 0.02em; }
+
+    /* two-up so the whole week is visible without four screens of scrolling */
+    .glance { grid-template-columns: 1fr 1fr; gap: 9px; }
+    .card { padding: 15px 12px 13px; gap: 5px; }
+    .card h3 { font-size: 16px; }
+    .card p { font-size: 13px; }
+    .card .when { font-size: 12px; }
+    .section-label { margin-bottom: 12px; }
 
     .table-scroll { overflow-x: visible; }
     table, tbody, tr, td { display: block; width: 100%; }
@@ -543,19 +566,27 @@
       border: 1px solid var(--rule);
       border-left: 5px solid var(--type);
       border-radius: 6px;
-      margin-bottom: 9px;
-      padding: 12px 14px;
+      margin-bottom: 8px;
+      padding: 11px 13px;
     }
 
     td { padding: 0; }
-    .t-time { width: auto; margin-bottom: 5px; font-size: 13px; color: var(--type); }
-    .t-time .dur { display: inline; margin-left: 8px; }
+    .t-time { width: auto; margin-bottom: 4px; font-size: 12.5px; color: var(--type); }
+    .t-time .dur { display: inline; margin-left: 8px; color: var(--ink-3); }
     .t-session { min-width: 0; }
-    .t-lead { max-width: none; min-width: 0; margin-top: 8px; font-size: 13px; }
+    .t-session .title { font-size: 15px; }
+    .t-session .outcome { font-size: 13px; margin-top: 4px; }
+    .t-lead { max-width: none; min-width: 0; margin-top: 7px; font-size: 12.5px; }
     .t-lead:not(:empty)::before { content: "Led by "; color: var(--ink-3); }
 
-    tr.logi { border-left-color: var(--ty-logi); }
-    tr.logi .t-time { color: var(--ink-3); }
+    /* breaks carry no detail — keep them to a single compact line */
+    tr.logi { border-left-color: var(--ty-logi); padding: 8px 13px; }
+    tr.logi .t-time { color: var(--ink-3); margin-bottom: 2px; }
+    tr.logi .title { font-size: 13.5px; }
+    tr.logi .t-lead { display: none; }
+
+    .notes { padding: 18px 16px; }
+    .notes li { font-size: 14px; }
   }
 
   /* ---------- print ---------- */
@@ -694,15 +725,15 @@
       <div class="fact"><dt>Dates</dt><dd>Mon 24 &ndash; Thu 27 August 2026</dd></div>
       <div class="fact"><dt>Venue</dt><dd>Egerton University <span style="font-weight:400; color:var(--ink-3)">(Day 1 afternoon at KMD)</span></dd></div>
       <div class="fact"><dt>Daily start</dt><dd>09:00</dd></div>
-      <div class="fact"><dt>Status</dt><dd>Draft for confirmation</dd></div>
+      <div class="fact"><dt>Status</dt><dd>Ready</dd></div>
     </dl>
   </header>
 
   <nav class="jump" aria-label="Jump to a day">
-    <a href="#day1">Day 1 &middot; Mon 24</a>
-    <a href="#day2">Day 2 &middot; Tue 25</a>
-    <a href="#day3">Day 3 &middot; Wed 26</a>
-    <a href="#day4">Day 4 &middot; Thu 27</a>
+    <a href="#day1"><span class="dl">Day 1 &middot; </span>Mon 24</a>
+    <a href="#day2"><span class="dl">Day 2 &middot; </span>Tue 25</a>
+    <a href="#day3"><span class="dl">Day 3 &middot; </span>Wed 26</a>
+    <a href="#day4"><span class="dl">Day 4 &middot; </span>Thu 27</a>
   </nav>
 
   <section>
@@ -787,13 +818,13 @@
           </tr>
           <tr class="ty-logi logi">
             <td class="t-time">13:00 &ndash; 14:15</td>
-            <td class="t-session"><span class="title">Travel preparation and transport coordination from Egerton<span class="chip">Lead to confirm</span></span></td>
-            <td class="t-lead">Secretariat</td>
+            <td class="t-session"><span class="title">Travel preparation and transport coordination from Egerton</span></td>
+            <td class="t-lead">Julius Kilemba, with the Secretariat</td>
           </tr>
           <tr class="ty-field">
             <td class="t-time">14:30 &ndash; 17:00<span class="dur">2h 30m</span></td>
-            <td class="t-session"><span class="tag"><svg class="ic"><use href="#i-field"/></svg>Field visit</span><span class="title">Site visit to the KMD offices<span class="chip">Lead to confirm</span></span><span class="outcome">Guided introduction to KMD systems and operations, weather services and forecasting, and a first discussion of how KMD information and RESPIRA air-quality work could link up.</span></td>
-            <td class="t-lead">KMD, with RESPIRA team</td>
+            <td class="t-session"><span class="tag"><svg class="ic"><use href="#i-field"/></svg>Field visit</span><span class="title">Site visit to the KMD offices</span><span class="outcome">Guided introduction to KMD systems and operations, weather services and forecasting, and a first discussion of how KMD information and RESPIRA air-quality work could link up.</span></td>
+            <td class="t-lead">Raphael Kimani with Dr. Fred Muita, KMD</td>
           </tr>
         </tbody>
       </table>
@@ -1001,7 +1032,6 @@
       <li><strong>Days 2 and 3 are smaller sessions.</strong> Days 1 and 4 are open to all stakeholders; the secretariat will confirm who is needed on the middle two days.</li>
       <li><strong>Day 1 runs partly off campus.</strong> Transport to the KMD offices is coordinated from Egerton after lunch, departing in time for a 14:30 start.</li>
       <li><strong>No technical background is needed.</strong> The introductions on Day 1 and the story circles on Day 2 draw on your own experience &mdash; what you notice at work, at home and in your neighbourhood. You do not need to know anything about air-quality data to take part.</li>
-      <li><strong>Two items marked &ldquo;lead to confirm&rdquo;</strong> are still being settled between the secretariat and KMD.</li>
     </ul>
   </section>
 
